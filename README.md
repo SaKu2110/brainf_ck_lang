@@ -1,0 +1,2 @@
+# brainf_ck_lang
+rubyでbrainf_ckのインタプリタを作ってみる
