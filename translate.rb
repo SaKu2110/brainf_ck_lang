@@ -1,5 +1,7 @@
 class Brainf_ck
 
+  class ProgramError < StandardError; end
+
   def initialize(src)
     # ソースコードを文字単位で分解
     @tokens = src.chars.to_a
@@ -26,6 +28,7 @@ class Brainf_ck
       when "<"
         pointer_num -= 1
         # ポインターの番号が負の時のエラー処理
+        raise ProgramError, "ポインターが左端を指しているためこれ以上移動が出来ません" if pointer_num < 0
       when "["
         if pointer[pointer_num] == 0
           process_num = @jumps[process_num]
@@ -59,6 +62,7 @@ class Brainf_ck
         start_points.push(point)
       elsif str == "]"
         # ] が多い時のエラー処理
+        raise ProgramError, "「]」が多すぎます" if start_points.empty?
 
         from = start_points.pop
         to = point
@@ -68,6 +72,7 @@ class Brainf_ck
       end
     end
     # [ が多い時のエラー処理
+    raise ProgramError, "「[」が多すぎます" unless start_points.empty?
 
     jump_points
   end
